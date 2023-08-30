@@ -13,80 +13,56 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Chats> chats = [
-    Chats(ava_photo: "anwar.jpg", nickName: "Anwar"),
-    Chats(ava_photo: "ava.png", nickName: "adam_w")
-  ];
-
-   chatSelected(int currentIndex) {
-    //  ListView.builder(
-    //   itemBuilder: (context, index) {
-    //  return Row(
-    //    children: [
-    //      ClipOval(
-    //        child: SizedBox.fromSize(
-    //          size: Size.fromRadius(30), // Image radius
-    //          child: Image.asset(chats[currentIndex].ava_photo,
-    //              fit: BoxFit.cover),
-    //        ),
-    //      ),
-    //      Text(chats[currentIndex].nickName)
-    //    ],
-    //  );
-    //   },
-    //   itemCount: 1,
-    // );
-     Text("ok");
-  }
+  List<String> names = ["Baxodir", "Samandar", "Baxtiyor"];
+  int index = -1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints boxConstraints) {
-          if (boxConstraints.maxWidth > 500) {
-            return Row(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: ClipOval(
-                          child: SizedBox.fromSize(
-                            size: Size.fromRadius(30), // Image radius
-                            child: Image.asset(chats[index].ava_photo,
-                                fit: BoxFit.cover),
-                          ),
-                        ),
-                        title: Text(chats[index].nickName),
-                        onLongPress: chatSelected(index),
-                      );
-                    },
-                    itemCount: chats.length,
-                  ),
-                ),
-              ],
-            );
-          } else {
-            return Container(
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: ClipOval(
-                      child: SizedBox.fromSize(
-                        size: Size.fromRadius(30), // Image radius
-                        child: Image.asset(chats[index].ava_photo,
-                            fit: BoxFit.cover),
-                      ),
-                    ),
-                    title: Text(chats[index].nickName),
+      body: Row(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 0.3 - 3,
+            height: MediaQuery.of(context).size.height,
+            child: Expanded(
+              child: ListView.separated(
+                separatorBuilder: (context, index) {
+                  return Divider(
+                    thickness: 0.5,
+                    height: 5,
                   );
                 },
-                itemCount: chats.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        this.index = index;
+                      });
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 40,
+                      color: Colors.blue,
+                      child: Text(names[index]),
+                    ),
+                  );
+                },
+                itemCount: names.length,
               ),
-            );
-          }
-        },
+            ),
+          ),
+          VerticalDivider(
+            width: 3,
+            thickness: 0.5,
+          ),
+          Container(
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width * 0.7 - 3,
+            height: MediaQuery.of(context).size.height,
+            child: Text(
+            index < 0 ? "Select a chat to start messaging" : names[index]),
+          )
+        ],
       ),
     );
   }
